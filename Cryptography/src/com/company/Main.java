@@ -12,7 +12,6 @@ public class Main {
     public static int rounds = 2;
     public static byte[][] s0 = new byte[4][4];
     public static byte[][] s1 = new byte[4][4];
-
     public static ArrayList<byte[]> arrayKeys = new ArrayList<>();
 
 
@@ -57,8 +56,6 @@ public class Main {
         byte[] bit = null;
         Keys k = new Keys(rawkey);
         byte[] ip = ip(plaintext);
-
-
         for(int i = 1; i <= rounds; i ++) {
             byte[] leftSide = getLeft(ip);
             byte[] rightSide = getRight(ip);
@@ -149,11 +146,16 @@ public class Main {
         return removeZero;
     }
 
+    // byte[] matrix (r,w) = Row, Column
+    // Matrix define by DOC.
     public static int searchMatrix(byte[][] matrix, int row, int col) {
         int number = matrix[row][col];
         return number;
     }
 
+    // Input: byte[] arrLeft, byte [] arrRight
+    // arrLeft compares to arrLeft from 0 -> 3
+    // Operation is XOR for each byte at some index.
     public static byte[] XOR (byte[] left, byte[] right) {
         byte[] xor = new byte[4];
         for(int i = 0; i < left.length; i ++) {
