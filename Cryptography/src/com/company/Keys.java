@@ -45,19 +45,12 @@ public class Keys {
 
         left = splitArray(permten, true); // left
         right = splitArray(permten, false); // right
-        System.out.println("Left side before rotation.");
-        p(left);
-        System.out.println("Right side before rotation.");
-        p(right);
 
         leftRotate(left,counter,left.length);
         leftRotate(right,counter, right.length);
 
         permten = combineBytes(left, right);
-        System.out.println("Rotation Left: ");
-        p(left);
-        System.out.println("Rotation Right: ");
-        p(right);
+
 
         byte[] keyGenerated = eightpermutation(combineBytes(left,right));
         System.out.println("Key" + counter);
