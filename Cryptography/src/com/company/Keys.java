@@ -7,10 +7,8 @@ public class Keys {
 
     public static byte[] permten = new byte[10];
     public static byte[] key =  new byte[8]; // For now len 8.
-
-
-    public byte[] left = new byte[10];
-    public byte[] right = new byte[10];
+    public byte[] left = new byte[5];
+    public byte[] right = new byte[5];
 
 
     public Keys(byte[] rawkey) {
@@ -41,22 +39,6 @@ public class Keys {
 
     }
 
-    // DES key 2
-    public byte[] getKey2() {
-
-        byte[] a = splitArray(permten, true); // left
-        byte[] b = splitArray(permten, false); // right
-
-        byte[] shifta = shiftLeft(a); // 1st shift before k1, LS-1 -> Product
-        byte[] shiftb = shiftLeft(b); // 1st shift before k1, LS-1 -> Product
-
-        byte[] doubleshifta = shiftLeft(shiftLeft(shifta)); // LS-2 Level
-        byte[] doubleshiftb = shiftLeft(shiftLeft(shiftb)); // LS-2 Level
-        System.out.println("Key 2");
-        return eightpermutation(combineBytes(doubleshifta, doubleshiftb));
-
-    }
-
     // DES key 1
     public byte[] getKey1(int counter) {
         //byte[] permten = tenpermutation(original);
@@ -71,6 +53,7 @@ public class Keys {
         leftRotate(left,counter,left.length);
         leftRotate(right,counter, right.length);
 
+        permten = combineBytes(left, right);
         System.out.println("Rotation Left: ");
         p(left);
         System.out.println("Rotation Right: ");
@@ -120,31 +103,11 @@ public class Keys {
     }
 
 
-    public static byte[] shiftLeftNtimes(byte[] arr, int n) {
-        // Assume n < 0
-        byte[] temp = new byte[arr.length];
-        for(int i = 0 ; i < n; i ++) {
-            temp = shiftLeft(arr);
-        }
-        return temp;
-
-    }
-
-    // Returns new array shifted once to the left.
-    public static byte[] shiftLeft(byte[] arr) {
-        byte[] newArray = new byte[arr.length];
-        byte firstIndex = arr[0];
-        for(int i = 0; i < arr.length - 1; i ++) {
-            newArray[i] = arr[i + 1]; // Shifting adding at index 0 -> value of index 1
-        }
-        newArray[arr.length - 1] = firstIndex; // Add first value to the end of the array.
-        return newArray;
-    }
 
 
     // Need to call this twice and keep track of left hand value.
-// boolean lower: True-> Lower half
-// boolean lower: False-> Upper half
+    // boolean lower: True-> Lower half
+    // boolean lower: False-> Upper half
     public static byte[] splitArray(byte[] rawkey, boolean lower) {
         if(lower) {
             // Lower

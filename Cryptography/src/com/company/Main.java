@@ -15,8 +15,8 @@ public class Main {
 
     public static void main(String[] args) {
         fillMatrix();
-        byte[] plaintext = {0,1,1,1,0,0,1,0};
-        byte[] rawkey = {1,0,1,0,0,0,0,0,1,0};
+        byte[] plaintext = {0,1,0,1,0,1,0,1};
+        byte[] rawkey = {1,1,1,0,0,0,1,1,1,0};
 
         p(Encrypt(rawkey, plaintext)); // Test case
     }
@@ -114,27 +114,19 @@ public class Main {
         Keys k = new Keys(rawkey);
         byte[] ip = ip(plaintext);
 
-        for(int i = 1; i < (rounds + 1); i ++) {
+        for(int i = 1; i <= rounds; i ++) {
 
             byte[] leftSide = getLeft(ip);
             byte[] rightSide = getRight(ip);
-            m("Right ride");
-            p(rightSide);
             byte[] p4 = functionK(rightSide, i, k);
-            m("P4 printing here.");
-            p(p4);
-            m("XOR is printed here.");
             byte[] xor = XOR(leftSide, p4);
-            p(xor);
-
-            ip = combineBytes(rightSide, xor); // This causes the swap.
-            m("Combined right left");
-            p(ip);
-
+            if(i == rounds){
+                ip = combineBytes(xor, rightSide);
+                break;
+            }
+            ip = combineBytes(rightSide, xor); // This causes the swap
         }
         bit = invertTable(ip);
-        //bit = ip;
-        p(bit);
         return bit;
     }
 
@@ -179,7 +171,6 @@ public class Main {
         for(int i = 0 ; i < iptable.length; i ++) {
             hash.put(i, iptable[i]); // Key, Value
         }
-
         for(Entry<Integer, Byte> e: hash.entrySet()) {
             invertedTable[e.getKey()] = table[e.getValue() - 1];
         }
