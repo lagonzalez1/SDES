@@ -24,11 +24,12 @@ public class Main {
         m("Completed Encryption: ");
         p(finalText); // Test case
         System.out.println("------------------");
-        byte[] ciphertext = {0,0,0,1,0,0,0,1};
-        byte[] rawkey2 = {0,0,0,0,0,0,0,0,0,0};
+        byte[] ciphertext = {1,0,0,1,0,0,0,0};
+        byte[] rawkey2 = {0,0,1,0,0,1,1,1,1,1};
         byte[] finalText2 = Decrypt(rawkey2, ciphertext);
         System.out.println("Completed Decryption: ");
         p(finalText2);
+
 
     }
 
